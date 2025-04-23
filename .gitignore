@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Django
+*.sqlite3
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+secrets.json
+
+# VSCode settings
+.vscode/
+
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
+
+# Migrations (optional - useful when collaborating to avoid merge issues)
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Node (if using npm for frontend stuff)
+node_modules/
+package-lock.json
+
+# dotenv (if you store secrets in .env files)
+.env
