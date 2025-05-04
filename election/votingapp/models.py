@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -54,7 +53,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username', 'full_name', 'address']
 
     # String representation of the User model
-    def _str_(self):
+    def __str__(self):
         return self.email
     
 
@@ -71,7 +70,7 @@ class Candidate(models.Model):
     
 
     # String representation of the Candidate model
-    def _str_(self):
+    def __str__(self):
         return f"{self.name} ({self.party})"
 
 # Position model for election positions
@@ -81,7 +80,7 @@ class Position(models.Model):
     #candidates = models.ManyToManyField(Candidate)
 
     # String representation of the Position model
-    def _str_(self):
+    def __str__(self):
         return self.name
 
 # Vote model to track votes cast by voters
@@ -90,7 +89,7 @@ class Vote(models.Model):
     voter = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # String representation of the Vote model
-    def _str_(self):
+    def __str__(self):
         return f"{self.voter.full_name} voted for {self.candidate.name}"    
 
 
@@ -106,7 +105,7 @@ class Election(models.Model):
 
 
     # String representation of the Election model
-    def _str_(self):
+    def __str__(self):
         return self.name
 
     # Method to check if the election is currently active
@@ -124,5 +123,5 @@ class ElectionResult(models.Model):
     winner = models.ForeignKey(Candidate, on_delete=models.CASCADE)
 
     # String representation of the ElectionResult model
-    def _str_(self):
+    def __str__(self):
         return f"Result of {self.election.name}: {self.winner.name}"
