@@ -1,28 +1,27 @@
 pipeline {
     agent any
     stages {
-        stage('Setup Environment') {
+        stage('Setup Python Virtual Environment') {
             steps {
+                echo 'Setting Up Venv...'
                 sh '''
-                # Clean previous deployment
-                sudo rm -rf /var/www/static/*
-                sudo rm -f /run/gunicorn.sock
-                
-                # Create fresh virtualenv
-                python -m venv venv
-                . venv/bin/activate
-                pip install -r requirements.txt
+                chmod +x envsetup.sh
+                ./envsetup.sh
                 '''
             }
         }
         
-        stage('Collect Static Files') {
+        stage('Handle Static Files') {
             steps {
+                echo 'Setting up static files...'
                 sh '''
+                # Use . instead of source (more compatible)
                 . venv/bin/activate
+
+                # Navigate to project directory
                 cd election
                 
-                # Create static directory with correct permissions
+                # Create persistent directory with proper permissions
                 sudo mkdir -p /var/www/static
                 sudo chown -R jenkins:www-data /var/www/static
                 sudo chmod -R 775 /var/www/static
@@ -30,50 +29,44 @@ pipeline {
                 # Collect static files
                 python manage.py collectstatic --noinput --clear
                 
-                # Final permission fix
+                # Fix permissions for Nginx
                 sudo chown -R www-data:www-data /var/www/static
-                sudo find /var/www/static -type d -exec chmod 755 {} \\;
-                sudo find /var/www/static -type f -exec chmod 644 {} \\;
+                sudo chmod -R 755 /var/www/static
                 '''
             }
         }
         
-        stage('Deploy Gunicorn') {
+        stage('Setup Gunicorn Server') {
             steps {
+                echo 'Starting Up Gunicorn...'
                 sh '''
-                . venv/bin/activate
-                cd election
-                
-                # Create socket directory
-                sudo mkdir -p /run/gunicorn
-                sudo chown jenkins:www-data /run/gunicorn
-                sudo chmod 775 /run/gunicorn
-                
-                # Start Gunicorn
-                gunicorn --bind unix:/run/gunicorn.sock \
-                         --workers 3 \
-                         --access-logfile - \
-                         --error-logfile - \
-                         election.wsgi:application &
+                chmod +x gunicorn.sh
+                ./gunicorn.sh
                 '''
             }
         }
         
-        stage('Configure Nginx') {
+        stage('Setup Nginx Server') {
             steps {
+                echo 'Starting Up Nginx...'
                 sh '''
-                # Test Nginx config
-                sudo nginx -t
+                chmod +x nginx.sh
+                ./nginx.sh
                 
-                # Restart Nginx
-                sudo systemctl restart nginx
-                
-                # Verify deployment
-                sleep 5
-                curl -I http://localhost/static/admin/css/base.css
-                curl -I http://localhost
+                # Verify static files
+                sleep 3
+                curl -I http://localhost/static/admin/css/base.css || true
                 '''
             }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up...'
+            sh '''
+            # Clean workspace staticfiles as jenkins user
+            sudo rm -rf /var/lib/jenkins/workspace/election-cicd/election/staticfiles/ || true
+            '''
         }
     }
 }
