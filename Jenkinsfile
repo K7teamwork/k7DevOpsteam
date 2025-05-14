@@ -27,7 +27,7 @@ pipeline {
                 sudo chmod -R 775 /var/www/static
                 
                 # Collect static files
-                python manage.py collectstatic --noinput --clear
+                python manage.py collectstatic --noinput
                 
                 # Fix permissions for Nginx
                 sudo chown -R www-data:www-data /var/www/static
