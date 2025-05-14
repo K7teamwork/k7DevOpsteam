@@ -3,14 +3,14 @@
 source venv/bin/activate
 
 
-#cd /var/lib/jenkins/jobs/election-cicd
+/var/lib/jenkins/workspace/election-cicd/election
 
 python3 manage.py makemigrations
 python3 manage.py migrate
 
 echo "Migrations applied successfully"
 
-#cd /var/lib/jenkins/workspace/
+/var/lib/jenkins/workspace/election-cicd/
 
 sudo cp -rf gunicorn.socket /etc/systemd/system/
 sudo cp -rf gunicorn.service /etc/systemd/system/
