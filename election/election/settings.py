@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2=0oa*nn=2m_&i*$lzhkgfn&q7nz$z(+5*4qmz*!%rnzf3g*l!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['54.164.40.83', '*']
 
 AUTH_USER_MODEL = 'votingapp.User'
 
