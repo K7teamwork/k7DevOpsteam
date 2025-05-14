@@ -65,7 +65,7 @@ pipeline {
             echo 'Cleaning up...'
             sh '''
             # Clean workspace staticfiles as jenkins user
-            sudo rm -rf /var/lib/jenkins/workspace/swapit-cicd/currency_converter/staticfiles/ || true
+            sudo rm -rf /var/lib/jenkins/workspace/election-cicd/election/staticfiles/ || true
             '''
         }
     }
