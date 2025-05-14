@@ -6,13 +6,13 @@ After=network.target
 [Service]
 User=jenkins
 Group=www-data
-WorkingDirectory=/var/lib/jenkins/workspace/swapit-cicd/currency_converter
-ExecStart=/var/lib/jenkins/workspace/swapit-cicd/venv/bin/gunicorn \
-          --error-logfile /var/lib/jenkins/workspace/swapit-cicd/error.log \
+WorkingDirectory=/var/lib/jenkins/workspace/election-cicd/election
+ExecStart=/var/lib/jenkins/workspace/election-cicd/venv/bin/gunicorn \
+          --error-logfile /var/lib/jenkins/workspace/election-cicd/error.log \
           --workers 3 \
           --capture-output --log-level debug \
           --bind unix:/run/gunicorn.sock \
-          currency_converter.wsgi:application
+          election.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
