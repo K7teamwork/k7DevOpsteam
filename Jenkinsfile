@@ -19,7 +19,7 @@ pipeline {
                 . venv/bin/activate
 
                 # Navigate to project directory
-                cd currency_converter
+                cd election
                 
                 # Create persistent directory with proper permissions
                 sudo mkdir -p /var/www/static
