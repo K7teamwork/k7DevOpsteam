@@ -1,23 +1,18 @@
-[Unit]
-Description=Gunicorn for Django App
+ [Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
 After=network.target
-Requires=network.target
 
 [Service]
 User=jenkins
 Group=www-data
-RuntimeDirectory=gunicorn
-WorkingDirectory=/var/lib/jenkins/workspace/election-cicd/election
-Environment="PATH=/var/lib/jenkins/workspace/election-cicd/venv/bin"
-ExecStart=/var/lib/jenkins/workspace/election-cicd/venv/bin/gunicorn \
-          --access-logfile - \
-          --error-logfile /var/lib/jenkins/workspace/election-cicd/gunicorn-error.log \
+WorkingDirectory=/var/lib/jenkins/workspace/swapit-cicd/currency_converter
+ExecStart=/var/lib/jenkins/workspace/swapit-cicd/venv/bin/gunicorn \
+          --error-logfile /var/lib/jenkins/workspace/swapit-cicd/error.log \
           --workers 3 \
-          --worker-class sync \
+          --capture-output --log-level debug \
           --bind unix:/run/gunicorn.sock \
-          election.wsgi:application
-Restart=always
-RestartSec=3
+          currency_converter.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
