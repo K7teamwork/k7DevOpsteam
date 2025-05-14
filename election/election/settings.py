@@ -28,7 +28,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['54.164.40.83', '*']
 
-
 AUTH_USER_MODEL = 'votingapp.User'
 
 #LOGIN_URL = '/dashboard/'
